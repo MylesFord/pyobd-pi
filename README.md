@@ -1,18 +1,17 @@
 pyobd
 =====
 
-<pre>OBD-Pi: Raspberry Pi Displaying Car Diagnostics (OBD-II) Data On An Aftermarket Head Unit
+<pre>Modification of pyobd and OBD-Pi with data logging centric features
 
-In this tutorial you will learn how to connect your Raspberry Pi to a Bluetooth OBD-II adapter and display realtime engine data to your cars aftermarket head unit.
 
 Hardware Required:
-1. Raspberry Pi
-2. Aftermarket head unit (Note: Must support Auxiliary input)
-3. Plugable USB Bluetooth 4.0 Low Energy Micro Adapter 
+1. Raspberry Pi 2/3
+2. Ublox USB GPS (coming soon)
+3. BMO055 9 DOF IMU with silabs USB-TTL converter (coming soon)
 4. 2A Car Supply / Switch or Micro USB Car Charger
-5. ELM327 Bluetooth Adapter or ELM327 USB Cable
-6. RCA cable 
-7. Keyboard (*optional)
+5. Scandool.net OBDLINK SX USB ELM327 Adapter (higher speed than avg elm cables)
+6. SPST switch for logging trigger on GPIO 37-39
+7. LED with resistor on pin GPIO 7-9.  +3v is output on 7 when logger active
 
 What is OBD-II?
 OBD stands for On-Board Diagnostics, and this standard connector has been mandated in the US since 1996. Now you can think of OBD-II as an on-board computer system that is responsible for monitoring your vehicle’s engine, transmission, and emissions control components. 
@@ -40,16 +39,14 @@ Before proceeding, run:
 
 Install these components using the command:
 #  sudo apt-get install python-serial
-#  sudo apt-get install bluetooth bluez-utils blueman
 #  sudo apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n libwxgtk2.8-dev
-#  sudo apt-get install git-core
 #  sudo reboot 
 
 Next, download the OBD-Pi Software direct from GitHub (https://github.com/Pbartek/pyobd-pi.git)
 
 Or using the command:
 #  cd ~
-#  git clone https://github.com/Pbartek/pyobd-pi.git
+#  git clone https://github.com/macsboost/pyobd-pi.git
 
 Vehicle Installation
 The vehicle installation is quite simple.
@@ -66,8 +63,6 @@ The vehicle installation is quite simple.
 
 6. Enter your login credentials and run:
 #  startx
-
-7. Launch BlueZ, the Bluetooth stack for Linux. Pair + Trust your ELM327 Bluetooth Adapter and Connect To: SPP Dev. You should see the Notification "Serial port connected to /dev/rfcomm0"
 
 Note: Click the Bluetooth icon, bottom right (Desktop) to configure your device. Right click on your Bluetooth device to bring up Connect To: SPP Dev.
 

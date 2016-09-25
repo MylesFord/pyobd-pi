@@ -117,7 +117,8 @@ class OBD_Recorder():
         
 username = getpass.getuser()  
 logitems = ["rpm", "speed", "throttle_pos", "load", "fuel_status"]
-o = OBD_Recorder('/home/'+username+'/pyobd-pi/log/', logitems)
+#o = OBD_Recorder('/home/'+username+'/pyobd-pi/log/', logitems) #had to hard code directory for auto run
+o = OBD_Recorder('/home/pi/pyobd-pi/log/', logitems)
 o.connect()
 loggingEnable = False
 
@@ -136,3 +137,4 @@ while True:
 
 GPIO.remove_event_detect(37)
 GPIO.cleanup()
+self.log_file.close

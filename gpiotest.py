@@ -17,4 +17,8 @@ while True:
 	GPIO.wait_for_edge(40, GPIO.RISING)
 	print("Button Pin 40 Released")
 	GPIO.output(7, GPIO.LOW)
+	 
+GPIO.remove_event_detect(37)
 GPIO.cleanup()
+
+
