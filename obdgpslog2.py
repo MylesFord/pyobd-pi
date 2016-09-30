@@ -12,6 +12,9 @@ import setgps10hz
 import os
 from gpscontroller import *
 
+switchpin = 37# switch gpio input.  pulled down to activate
+ledpin = 33 #led plus output
+
 os.system('clear') #clear terminal, optional
 
 setgps10hz.main()
@@ -21,9 +24,10 @@ print("scanning for OBD serial")
 from obd_utils import scanSerial
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(switchpin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(7, GPIO.OUT)
+GPIO.setup(ledpin, GPIO.OUT) # LED output High = on
+GPIO.output(ledpin, GPIO.LOW)
 #loggingEnable
 
 #gpsData.__main__()
@@ -42,18 +46,18 @@ gpsc.start()
 
 def doLogger(channel):
         global loggingEnable
-        if GPIO.input(37):
+        if GPIO.input(switchpin):
             print("Pin37 disengaged")
             print("Logging Disabled")
-            GPIO.output(7, GPIO.LOW)
+            GPIO.output(ledpin, GPIO.LOW)
             loggingEnable = False
         else: 
             print("Pin37 engaged")
             print("Logging Enabled")
-            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(ledpin, GPIO.HIGH)
             loggingEnable = True
 
-GPIO.add_event_detect(37, GPIO.BOTH, callback=doLogger, bouncetime=300)
+GPIO.add_event_detect(switchpin, GPIO.BOTH, callback=doLogger, bouncetime=300)
 
 class OBD_Recorder():
     def __init__(self, path, log_items):
@@ -62,8 +66,10 @@ class OBD_Recorder():
         localtime = time.localtime(time.time())
         filename = path+"car-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".log"
         self.log_file = open(filename, "w", 128)
-        self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
+        #self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
+        self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Mode\n");
 
+        
         for item in log_items:
             self.add_log_item(item)
 
@@ -99,25 +105,24 @@ class OBD_Recorder():
     def record_data(self):
         if(self.port is None):
             return None
-        
-        print "Logging started"
-        
-        while 1:
-            localtime = datetime.now()
-            current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
-            log_string = current_time
-            results = {}
-            for index in self.sensorlist:
+        print "logging " + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
+
+        #while 1:
+        localtime = datetime.now()
+        current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
+        log_string = current_time
+        results = {}
+        for index in self.sensorlist:
                 (name, value, unit) = self.port.sensor(index)
                 log_string = log_string + ","+str(value)
                 results[obd_sensors.SENSORS[index].shortname] = value;
 
-            gear = self.calculate_gear(results["rpm"], results["speed"])
-            log_string = log_string #+ "," + str(gear)
-            log_string = log_string + "," + gpsc.fix.latitude + "," + gpsc.fix.longitude + "," + gpsc.utc + gpsc.fix.time
-            log_string = log_string + "," + gpsc.fix.altitude + "," + gpsc.fix.speed + "," + gpsc.track + gpsc.fix.mode
-            print "GPS? ", gpsc.fix.mode + "," + gpsc.utc + "," + gpsc.fix.time
-            self.log_file.write(log_string+"\n")
+        gear = self.calculate_gear(results["rpm"], results["speed"])
+        log_string = log_string #+ "," + str(gear)
+        log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
+        log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*1.151) + "," + str(gpsc.fix.track) + str(gpsc.fix.mode)
+        print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
+        self.log_file.write(log_string+"\n")
 
             
     def calculate_gear(self, rpm, speed):
@@ -151,17 +156,24 @@ while True:
     if loggingEnable:
         print "trying to log"
         try:
-            if not o.is_connected():
-                print "Not connected"                
-            o.record_data()
+                if not o.is_connected():
+                    print "Not connected"
+                    print "reconnecting"
+                    o.connect()
+                    time.sleep(1)
+                o.record_data()
 
         except:
-            print "exception - likely no car found"
-    time.sleep(1)
-    print "looping"
-    print gpsc.fix.mode
+                if True:
+                    print "exception - likely no car found"
+                    #print "reconnecting"
+                    #o.connect()
+                    time.sleep(.5);
+    else:        
+            time.sleep(1)
+            print "waiting for trigger " + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
 
-GPIO.remove_event_detect(37)
+GPIO.remove_event_detect(switchpin)
 GPIO.cleanup()
 #gpsc.stopController()
 self.log_file.close
