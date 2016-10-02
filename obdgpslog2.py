@@ -10,6 +10,7 @@ import getpass
 import RPi.GPIO as GPIO
 import setgps10hz
 import os
+import numpy as np
 from gpscontroller import *
 
 switchpin = 37# switch gpio input.  pulled down to activate
@@ -28,17 +29,6 @@ GPIO.setup(switchpin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(ledpin, GPIO.OUT) # LED output High = on
 GPIO.output(ledpin, GPIO.LOW)
-#loggingEnable
-
-#gpsData.__main__()
-#execfile("./gpsData.py")
-
-#print gpsd.satellites
-
-#gpsData.gpsp = GpsPoller() # create the thread
-
-#gpsData.gpsp.start() # start it up
-#print gpsd.satellites
 
 gpsc = GpsController()
 gpsc.start()
@@ -122,6 +112,7 @@ class OBD_Recorder():
         log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
         log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*1.151) + "," + str(gpsc.fix.track) + str(gpsc.fix.mode)
         print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
+        log_string = log_string.fillna('') #replace NaN with no char
         self.log_file.write(log_string+"\n")
 
             
