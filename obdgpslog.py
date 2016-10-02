@@ -10,11 +10,9 @@ import getpass
 import RPi.GPIO as GPIO
 import setgps10hz
 import os
-import gpsData
+from gpscontroller import *
 
 os.system('clear') #clear terminal, optional
-
-
 
 setgps10hz.main()
 print("starting GPSD")
@@ -27,7 +25,20 @@ GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(7, GPIO.OUT)
 #loggingEnable
- 
+
+#gpsData.__main__()
+#execfile("./gpsData.py")
+
+#print gpsd.satellites
+
+#gpsData.gpsp = GpsPoller() # create the thread
+
+#gpsData.gpsp.start() # start it up
+#print gpsd.satellites
+
+gpsc = GpsController()
+gpsc.start()
+
 
 def doLogger(channel):
         global loggingEnable
@@ -145,7 +156,9 @@ while True:
             print "exception - likely no car found"
     time.sleep(1)
     print "looping"
+    print gpsc.fix.latitude
 
 GPIO.remove_event_detect(37)
 GPIO.cleanup()
+#gpsc.stopController()
 self.log_file.close
