@@ -11,27 +11,28 @@ import RPi.GPIO as GPIO
 
 from obd_utils import scanSerial
 
+switchpin = 37
+ledpin = 33
+
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(switchpin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(7, GPIO.OUT)
+GPIO.setup(ledpin, GPIO.OUT)
 #loggingEnable
 
 
 def doLogger(channel):
         global loggingEnable
-        if GPIO.input(37):
-            print("Pin37 disengaged")
+        if GPIO.input(switchpin):
             print("Logging Disabled")
-            GPIO.output(7, GPIO.LOW)
+            GPIO.output(ledpin, GPIO.LOW)
             loggingEnable = False
         else: 
-            print("Pin37 engaged")
             print("Logging Enabled")
-            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(ledpin, GPIO.HIGH)
             loggingEnable = True
 
-GPIO.add_event_detect(37, GPIO.BOTH, callback=doLogger, bouncetime=300)
+GPIO.add_event_detect(switchpin, GPIO.BOTH, callback=doLogger, bouncetime=300)
 
 class OBD_Recorder():
     def __init__(self, path, log_items):
@@ -128,13 +129,14 @@ while True:
         try:
             if not o.is_connected():
                 print "Not connected"                
-            o.record_data()
+            print('logging')
+	    o.record_data()
 
         except:
             print "exception - likely no car found"
     time.sleep(1)
     print "looping"
 
-GPIO.remove_event_detect(37)
+GPIO.remove_event_detect(switchpin)
 GPIO.cleanup()
 self.log_file.close

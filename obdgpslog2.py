@@ -112,7 +112,7 @@ class OBD_Recorder():
         log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
         log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*1.151) + "," + str(gpsc.fix.track) + str(gpsc.fix.mode)
         print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
-        log_string = log_string.fillna('') #replace NaN with no char
+        #log_string = log_string.fillna('') #replace NaN with no char
         self.log_file.write(log_string+"\n")
 
             
