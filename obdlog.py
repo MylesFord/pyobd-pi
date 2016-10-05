@@ -14,12 +14,12 @@ from obd_utils import scanSerial
 switchpin = 37
 ledpin = 33
 
+startloggingonstartup = True  #configures logger to auto start if True
+
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(switchpin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(40, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(ledpin, GPIO.OUT)
-#loggingEnable
-
 
 def doLogger(channel):
         global loggingEnable
@@ -121,8 +121,12 @@ logitems = ["rpm", "speed", "throttle_pos", "load", "fuel_status"]
 #o = OBD_Recorder('/home/'+username+'/pyobd-pi/log/', logitems) #had to hard code directory for auto run
 o = OBD_Recorder('/home/pi/pyobd-pi/log/', logitems)
 o.connect()
-loggingEnable = False
-
+loggingEnable = startloggingonstartup
+if loggingEnable:
+        GPIO.output(ledpin, GPIO.HIGH)
+else:
+        GPIO.output(ledpin, GPIO.LOW)
+        
 while True:
     if loggingEnable:
         print "trying to log"
