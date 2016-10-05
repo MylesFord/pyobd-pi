@@ -6,5 +6,5 @@ cd /
 cd home/pi/pyobd-pi
 
 #sudo python obdlog.py
-sudo python obdgpslog2.py &
+sudo python obdgpslog2.py > /dev/tty1
 cd ~
