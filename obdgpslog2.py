@@ -13,6 +13,8 @@ import os
 import numpy as np
 from gpscontroller import *
 
+startloggingonstartup = False #script will auto log on startup if true
+
 switchpin = 37# switch gpio input.  pulled down to activate
 ledpin = 33 #led plus output
 
@@ -42,7 +44,6 @@ def doLogger(channel):
             GPIO.output(ledpin, GPIO.LOW)
             loggingEnable = False
         else: 
-            print("Pin37 engaged")
             print("Logging Enabled")
             GPIO.output(ledpin, GPIO.HIGH)
             loggingEnable = True
@@ -141,7 +142,12 @@ logitems = ["rpm", "speed", "throttle_pos", "load", "fuel_status"]
 #o = OBD_Recorder('/home/'+username+'/pyobd-pi/log/', logitems) #had to hard code directory for auto run
 o = OBD_Recorder('/home/pi/pyobd-pi/log/', logitems)
 o.connect()
-loggingEnable = False
+
+loggingEnable = startloggingonstartup
+if loggingEnable:
+        GPIO.output(ledpin, GPIO.HIGH)
+else:
+        GPIO.output(ledpin, GPIO.LOW)
 
 while True:
     if loggingEnable:
@@ -153,6 +159,7 @@ while True:
                     o.connect()
                     time.sleep(1)
                 o.record_data()
+		print("logging")
 
         except:
                 if True:
@@ -162,7 +169,7 @@ while True:
                     time.sleep(.5);
     else:        
             time.sleep(1)
-            print "waiting for trigger " + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
+            print "idling" + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
 
 GPIO.remove_event_detect(switchpin)
 GPIO.cleanup()
