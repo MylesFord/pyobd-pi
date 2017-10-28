@@ -1,6 +1,6 @@
 #OBDGSPLOG17.py Written for MEGR3092 Fall 20017 by Mac McAlpine
 #Based on obd-pi by Donour Sizemore and others
-#IWANNAGOFAST
+#IWANNAGOFAST2
 
 #!/usr/bin/env python
 
@@ -15,6 +15,8 @@ import RPi.GPIO as GPIO
 import setgps10hz
 import os
 import numpy as np
+import pygame
+from pygame.locals import *
 from sense_hat import SenseHat
 from gpscontroller import *
 
@@ -23,17 +25,27 @@ startloggingonstartup = False #script will auto log on startup if true
 
 switchpin = 37# switch gpio input.  pulled down to activate
 ledpin = 33 #led plus output
-
 os.system('clear') #clear terminal, optional
-sense = SenseHat()
 
-sense.show_message(“OBDGPSLOG17”)
+pygame.init()
+
+sense = SenseHat()
+sense.show_message("LGR")
+
+
+#while True:
+#    for event in sense.stick.get_events():
+#		if event.direction == "down":
+#			loggingEnable = False
+#		if event.direction == "up":
+#			loggingEnable = True
+        #print(event.direction, event.action)
 
 setgps10hz.main()
 print("starting GPSD")
-sense.show_message(“GPScfg”)
+sense.set_pixel(7, 0, [0, 255, 0])
 
-os.system("gpsd /dev/ttyACM0")
+os.system("gpsd /dev/ttyACM0") 
 print("scanning for OBD serial")
 from obd_utils import scanSerial
 
@@ -46,37 +58,53 @@ GPIO.output(ledpin, GPIO.LOW)
 gpsc = GpsController()
 gpsc.start()
 
+def endMe():
+	GPIO.remove_event_detect(switchpin)
+	GPIO.cleanup()
+	#gpsc.stopController()
+	self.log_file.close
+	sys.exit()
 
-def doLogger(channel):
-        global loggingEnable
-        if GPIO.input(switchpin):
-            print("Pin37 disengaged")
-            print("Logging Disabled")
-            GPIO.output(ledpin, GPIO.LOW)
-            loggingEnable = False
-        else: 
-            print("Logging Enabled")
-            GPIO.output(ledpin, GPIO.HIGH)
-            loggingEnable = True
+
+def doLogger():
+	global loggingEnable
+	for event in sense.stick.get_events(): #get joystick events
+		#if GPIO.input(switchpin) or (event.action == 'pressed' and event.direction == "down"):
+		if event.action == 'pressed' and event.direction == "down":
+			print("Pin37 disengaged")
+			print("Logging Disabled")
+			GPIO.output(ledpin, GPIO.LOW)
+			sense.set_pixel(0, 0, [255, 0, 0])
+			loggingEnable = False
+		#elif (not GPIO.input(switchpin)) or (event.action == 'pressed' and event.direction == "up"):
+		elif event.action == 'pressed' and event.direction == "up": 
+			print("Logging Enabled")
+			GPIO.output(ledpin, GPIO.HIGH)
+			loggingEnable = True
+			sense.set_pixel(0, 0, [0, 255, 0])
+		elif (event.action == 'pressed' and event.direction == "left"):
+			endMe()
 
 GPIO.add_event_detect(switchpin, GPIO.BOTH, callback=doLogger, bouncetime=300)
 
+
+
 class OBD_Recorder():
     def __init__(self, path, log_items):
-        self.port = None
-        self.sensorlist = []
-        localtime = time.localtime(time.time())
-        filename = path+"car-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".log"
-        self.log_file = open(filename, "w", 128)
-        #self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
-        self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Mode\n");
+		self.port = None
+		self.sensorlist = []
+		localtime = time.localtime(time.time())
+		filename = path+"car-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".log"
+		self.log_file = open(filename, "w", 128)
+		#self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
+		self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Mode\n");
 
         
-        for item in log_items:
-            self.add_log_item(item)
+		for item in log_items:
+			self.add_log_item(item)
 
-        self.gear_ratios = [34/13, 39/21, 36/23, 27/20, 26/21, 25/22]
-        #log_formatter = logging.Formatter('%(asctime)s.%(msecs).03d,%(message)s', "%H:%M:%S")
+		self.gear_ratios = [34/13, 39/21, 36/23, 27/20, 26/21, 25/22]
+		#log_formatter = logging.Formatter('%(asctime)s.%(msecs).03d,%(message)s', "%H:%M:%S")
 
     def connect(self):
         portnames = scanSerial()
@@ -155,34 +183,72 @@ o = OBD_Recorder('/home/pi/pyobd-pi/log/', logitems)
 o.connect()
 
 loggingEnable = startloggingonstartup
+
 if loggingEnable:
-        GPIO.output(ledpin, GPIO.HIGH)
+	GPIO.output(ledpin, GPIO.HIGH)    	
+	sense.set_pixel(7, 0, [0, 255, 0])
 else:
-        GPIO.output(ledpin, GPIO.LOW)
+	GPIO.output(ledpin, GPIO.LOW)
+	sense.set_pixel(7, 0, [0, 0, 0])
+
+sense.set_pixel(0, 0, [255, 0, 0])
 
 while True:
-    if loggingEnable:
-        print "trying to log"
-        try:
-                if not o.is_connected():
-                    print "Not connected"
-                    print "reconnecting"
-                    o.connect()
-                    time.sleep(1)
-                o.record_data()
-		print("logging")
+	if loggingEnable:
+		print "trying to log"
+		try:
+			if not o.is_connected():
+				print "Not connected"
+				print "reconnecting"
+			o.connect()
+			time.sleep(1)
+			o.record_data()
+			print("logging")
 
-        except:
-                if True:
-                    print "exception - likely no car found"
+		except:
+			if True:
+				print "exception - likely no car found"
                     #print "reconnecting"
                     #o.connect()
-                    time.sleep(.5);
-    else:        
-            time.sleep(1)
-            print "idling" + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
-
-GPIO.remove_event_detect(switchpin)
-GPIO.cleanup()
-#gpsc.stopController()
-self.log_file.close
+				time.sleep(.5);
+	else:        
+		#do this when not logging
+		time.sleep(1)
+		print "idling" + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
+	
+		
+	if str(gpsc.fix.mode) == "3":
+		sense.set_pixel(1, 0, [0, 255, 0])
+	elif str(gpsc.fix.mode) == "2":
+		sense.set_pixel(1, 0, [0, 0, 255])
+	else:
+		sense.set_pixel(1, 0, [255, 0, 0])
+		
+	if len(gpsc.satellites) > 9:
+		sense.set_pixel(2, 0, [0, 0, 255])
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(4, 0, [0, 0, 255])
+		sense.set_pixel(5, 0, [0, 0, 255])
+	elif len(gpsc.satellites) >4:
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(4, 0, [0, 0, 0])
+		sense.set_pixel(5, 0, [0, 0, 0])
+	elif len(gpsc.satellites) >2:
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(4, 0, [0, 0, 0])
+		sense.set_pixel(5, 0, [0, 0, 0])
+	
+	elif len(gpsc.satellites) >0:
+		sense.set_pixel(3, 0, [0, 0, 255])
+		sense.set_pixel(3, 0, [0, 0, 0])
+		sense.set_pixel(4, 0, [0, 0, 0])
+		sense.set_pixel(5, 0, [0, 0, 0])
+	elif len(gpsc.satellites) ==0:
+		sense.set_pixel(3, 0, [0, 0, 0])
+		sense.set_pixel(3, 0, [0, 0, 0])
+		sense.set_pixel(4, 0, [0, 0, 0])
+		sense.set_pixel(5, 0, [0, 0, 0])
+	doLogger()
+	
