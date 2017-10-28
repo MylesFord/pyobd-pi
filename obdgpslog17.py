@@ -20,11 +20,10 @@ from pygame.locals import *
 from sense_hat import SenseHat
 from gpscontroller import *
 
-
 startloggingonstartup = False #script will auto log on startup if true
 blink = False #led blinker
 
-loggingRate = 10	#sets logging rate delay
+loggingRate = 20	#sets logging rate delay
 
 switchpin = 37# switch gpio input.  pulled down to activate
 ledpin = 33 #led plus output
@@ -100,7 +99,7 @@ class OBD_Recorder():
 		filename = path+"car-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".log"
 		self.log_file = open(filename, "w", 128)
 		#self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
-		self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Mode\n");
+		self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Sats,AccX,AccY,AccZ,GyX,GyY.GyZ,PiT,PiP\n");
 
         
 		for item in log_items:
@@ -150,10 +149,25 @@ class OBD_Recorder():
                 log_string = log_string + ","+str(value)
                 results[obd_sensors.SENSORS[index].shortname] = value;
 
+		accelerometer_data = sense.get_accelerometer_raw()
+		#gyroscope_data = sense.get_gyroscope_raw()
+		#h = sense.get_humidity() 
+		#p = sense.get_pressure()
+		#t = sense.get_temperature_from_pressure() 
+		
         gear = self.calculate_gear(results["rpm"], results["speed"])
         log_string = log_string #+ "," + str(gear)
         log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
-        log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*2.237) + "," + str(gpsc.fix.track) + str(gpsc.fix.mode)
+        log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*2.237) + "," + str(gpsc.fix.track) + "," + str(len(gpsc.satellites))
+        log_string = log_string + "," + str(accelerometer_data['x'])        
+        log_string = log_string + "," + str(accelerometer_data['y'])
+        log_string = log_string + "," + str(accelerometer_data['z'])
+        #log_string = log_string + "," + str(gyroscope_data['x'])
+        #log_string = log_string + "," + str(gyroscope_data['y'])
+        #log_string = log_string + "," + str(gyroscope_data['z'])
+        #str(sense.get_temperature_from_pressure())
+        #str(sense.get_pressure())
+        
         #print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
         #log_string = log_string.fillna('') #replace NaN with no char
         self.log_file.write(log_string+"\n")
@@ -204,6 +218,7 @@ while True:
 		else:
 			sense.set_pixel(7, 0, [0, 0, 0])
 		#print "trying to log"
+		#o.record_data()
 		try:
 			if not o.is_connected():
 				print "Not connected"
@@ -211,7 +226,7 @@ while True:
 				o.connect()
 			time.sleep(1/loggingRate)
 			o.record_data()
-			print "logging" + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
+			print "logging " + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
 			sense.set_pixel(0, 1, [0, 255, 0]) #set obd light to green
 				
 		except:
@@ -225,7 +240,7 @@ while True:
 		#do this when not logging
 		time.sleep(1)
 		sense.set_pixel(7, 0, [0, 0, 0])	#turn off recording led
-		print "idling" + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
+		print "idling " + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
 	
 		
 	if str(gpsc.fix.mode) == "3":
