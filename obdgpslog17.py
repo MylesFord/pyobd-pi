@@ -22,6 +22,9 @@ from gpscontroller import *
 
 
 startloggingonstartup = False #script will auto log on startup if true
+blink = False #led blinker
+
+loggingRate = 10	#sets logging rate delay
 
 switchpin = 37# switch gpio input.  pulled down to activate
 ledpin = 33 #led plus output
@@ -135,7 +138,7 @@ class OBD_Recorder():
     def record_data(self):
         if(self.port is None):
             return None
-        print "logging " + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
+        #print "logging " + str(datetime.now()) + " GPS Status:" + str(gpsc.fix.mode)
 
         #while 1:
         localtime = datetime.now()
@@ -151,7 +154,7 @@ class OBD_Recorder():
         log_string = log_string #+ "," + str(gear)
         log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
         log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*2.237) + "," + str(gpsc.fix.track) + str(gpsc.fix.mode)
-        print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
+        #print "GPS? ", str(gpsc.fix.mode) + "," + str(gpsc.utc) + "," + str(gpsc.fix.time)
         #log_string = log_string.fillna('') #replace NaN with no char
         self.log_file.write(log_string+"\n")
 
@@ -195,25 +198,33 @@ sense.set_pixel(0, 0, [255, 0, 0])
 
 while True:
 	if loggingEnable:
-		print "trying to log"
+		blink = not blink #recording light state
+		if blink:
+			sense.set_pixel(7, 0, [255, 0, 0])
+		else:
+			sense.set_pixel(7, 0, [0, 0, 0])
+		#print "trying to log"
 		try:
 			if not o.is_connected():
 				print "Not connected"
 				print "reconnecting"
-			o.connect()
-			time.sleep(1)
+				o.connect()
+			time.sleep(1/loggingRate)
 			o.record_data()
-			print("logging")
-
+			print "logging" + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
+			sense.set_pixel(0, 1, [0, 255, 0]) #set obd light to green
+				
 		except:
 			if True:
-				print "exception - likely no car found"
+				print "exception - likely no car/interface found"
+				sense.set_pixel(0, 1, [255, 0, 0])	#set obd light to red		
                     #print "reconnecting"
                     #o.connect()
 				time.sleep(.5);
 	else:        
 		#do this when not logging
 		time.sleep(1)
+		sense.set_pixel(7, 0, [0, 0, 0])	#turn off recording led
 		print "idling" + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
 	
 		
@@ -224,12 +235,12 @@ while True:
 	else:
 		sense.set_pixel(1, 0, [255, 0, 0])
 		
-	if len(gpsc.satellites) > 9:
+	if len(gpsc.satellites) > 11: 
 		sense.set_pixel(2, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 255])
 		sense.set_pixel(4, 0, [0, 0, 255])
 		sense.set_pixel(5, 0, [0, 0, 255])
-	elif len(gpsc.satellites) >4:
+	elif len(gpsc.satellites) >5:
 		sense.set_pixel(3, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 255])
 		sense.set_pixel(4, 0, [0, 0, 0])
