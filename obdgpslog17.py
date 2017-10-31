@@ -254,7 +254,7 @@ while True:
 	#	if gpsc.satellites[numsat].used:
 	#		usedsat=usedsat+1
 	
-	print "usedsat " + str(usedsat)
+	#print "usedsat " + str(usedsat)
 	
 		
 	if str(gpsc.fix.mode) == "3":
