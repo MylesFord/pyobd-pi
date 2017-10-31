@@ -99,7 +99,7 @@ class OBD_Recorder():
 		filename = path+"car-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".log"
 		self.log_file = open(filename, "w", 128)
 		#self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status\n");
-		self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,SpeedMPH,Track,Sats,AccX,AccY,AccZ,GyX,GyY.GyZ,PiT,PiP\n");
+		self.log_file.write("Time,RPM,MPH,Throttle,Load,Fuel Status,Latitude,Longitude,GPSTime,Altitude,GPSMPH,Track,Sats,AccX,AccY,AccZ,GyX,GyY,GyZ,PiT,PiP\n");
 
         
 		for item in log_items:
@@ -156,9 +156,16 @@ class OBD_Recorder():
 		#t = sense.get_temperature_from_pressure() 
 		
         gear = self.calculate_gear(results["rpm"], results["speed"])
-        log_string = log_string #+ "," + str(gear)
-        log_string = log_string + "," + str(gpsc.fix.latitude) + "," + str(gpsc.fix.longitude) + "," + str(gpsc.utc) + str(gpsc.fix.time)
-        log_string = log_string + "," + str(gpsc.fix.altitude) + "," + str(gpsc.fix.speed*2.237) + "," + str(gpsc.fix.track) + "," + str(len(gpsc.satellites))
+        log_string = log_string #+ "," + str(gear) 
+        log_string = log_string + "," + str(gpsc.fix.latitude)
+        log_string = log_string + "," + str(gpsc.fix.longitude)
+        log_string = log_string + "," + str(gpsc.utc)
+        log_string = log_string + "," + str(gpsc.fix.time)
+        log_string = log_string + "," + str(gpsc.fix.speed*2.237)
+        log_string = log_string + "," + str(gpsc.fix.altitude)
+        log_string = log_string + "," + str(gpsc.fix.track)
+        log_string = log_string + "," + str(gpsc.fix.track)
+        log_string = log_string + "," + str(len(gpsc.satellites))
         log_string = log_string + "," + str(accelerometer_data['x'])        
         log_string = log_string + "," + str(accelerometer_data['y'])
         log_string = log_string + "," + str(accelerometer_data['z'])
@@ -250,29 +257,29 @@ while True:
 	else:
 		sense.set_pixel(1, 0, [255, 0, 0])
 		
-	if len(gpsc.satellites) > 11: 
+	if (len(gpsc.satellites) > 11): 
 		sense.set_pixel(2, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 255])
 		sense.set_pixel(4, 0, [0, 0, 255])
 		sense.set_pixel(5, 0, [0, 0, 255])
-	elif len(gpsc.satellites) >5:
+	elif (len(gpsc.satellites) >5):
+		sense.set_pixel(2, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 255])
-		sense.set_pixel(3, 0, [0, 0, 255])
-		sense.set_pixel(4, 0, [0, 0, 0])
+		sense.set_pixel(4, 0, [0, 0, 255])
 		sense.set_pixel(5, 0, [0, 0, 0])
-	elif len(gpsc.satellites) >2:
-		sense.set_pixel(3, 0, [0, 0, 255])
+	elif (len(gpsc.satellites) >2):
+		sense.set_pixel(2, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 255])
 		sense.set_pixel(4, 0, [0, 0, 0])
 		sense.set_pixel(5, 0, [0, 0, 0])
 	
-	elif len(gpsc.satellites) >0:
-		sense.set_pixel(3, 0, [0, 0, 255])
+	elif (len(gpsc.satellites) >0):
+		sense.set_pixel(2, 0, [0, 0, 255])
 		sense.set_pixel(3, 0, [0, 0, 0])
 		sense.set_pixel(4, 0, [0, 0, 0])
 		sense.set_pixel(5, 0, [0, 0, 0])
-	elif len(gpsc.satellites) ==0:
-		sense.set_pixel(3, 0, [0, 0, 0])
+	elif (len(gpsc.satellites) ==0):
+		sense.set_pixel(2, 0, [0, 0, 0])
 		sense.set_pixel(3, 0, [0, 0, 0])
 		sense.set_pixel(4, 0, [0, 0, 0])
 		sense.set_pixel(5, 0, [0, 0, 0])
