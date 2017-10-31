@@ -249,6 +249,13 @@ while True:
 		sense.set_pixel(7, 0, [0, 0, 0])	#turn off recording led
 		print "idling " + str(datetime.now()) + " GStat:" + str(gpsc.fix.mode) + "GSpd:" +str(gpsc.fix.speed*2.237) + " GSats:" + str(len(gpsc.satellites))
 	
+	#usedsat = 0
+	#for numsat in gpsc.satellites:
+	#	if gpsc.satellites[numsat].used:
+	#		usedsat=usedsat+1
+	
+	print "usedsat " + str(usedsat)
+	
 		
 	if str(gpsc.fix.mode) == "3":
 		sense.set_pixel(1, 0, [0, 255, 0])
