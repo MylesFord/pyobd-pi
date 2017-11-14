@@ -109,7 +109,8 @@ class OBD_Recorder():
 
 		accelerometer_data = sense.get_accelerometer_raw()
 
-		#gyroscope_data = sense.get_gyroscope_raw()
+		gyroscope_data = sense.get_gyroscope_raw()
+		
 		#h = sense.get_humidity() 
 		#p = sense.get_pressure()
 		#t = sense.get_temperature_from_pressure() 
@@ -119,18 +120,17 @@ class OBD_Recorder():
 		log_string = log_string + "," + str(gpsc.fix.latitude)
 		log_string = log_string + "," + str(gpsc.fix.longitude)
 		log_string = log_string + "," + str(gpsc.utc)
-		log_string = log_string + "," + str(gpsc.fix.time)
-		log_string = log_string + "," + str(gpsc.fix.speed*2.237)
 		log_string = log_string + "," + str(gpsc.fix.altitude)
-		log_string = log_string + "," + str(gpsc.fix.track)
+		#log_string = log_string + "," + str(gpsc.fix.time)
+		log_string = log_string + "," + str(gpsc.fix.speed*2.237)
 		log_string = log_string + "," + str(gpsc.fix.track)
 		log_string = log_string + "," + str(len(gpsc.satellites))
 		log_string = log_string + "," + str(accelerometer_data['x'])        
 		log_string = log_string + "," + str(accelerometer_data['y'])
 		log_string = log_string + "," + str(accelerometer_data['z'])
-		#log_string = log_string + "," + str(gyroscope_data['x'])
-		#log_string = log_string + "," + str(gyroscope_data['y'])
-		#log_string = log_string + "," + str(gyroscope_data['z'])
+		log_string = log_string + "," + str(gyroscope_data['x'])
+		log_string = log_string + "," + str(gyroscope_data['y'])
+		log_string = log_string + "," + str(gyroscope_data['z'])
 		#str(sense.get_temperature_from_pressure())
 		#str(sense.get_pressure())
         
