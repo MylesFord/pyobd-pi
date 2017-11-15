@@ -155,7 +155,7 @@ class OBD_Recorder():
 		#p = sense.get_pressure()
 		#t = sense.get_temperature_from_pressure() 
 		
-        gear = self.calculate_gear(results["rpm"], results["speed"])
+		gear = self.calculate_gear(results["rpm"], results["speed"])
 		log_string = log_string #+ "," + str(gear) 
 		log_string = log_string + "," + str(gpsc.fix.latitude)
 		log_string = log_string + "," + str(gpsc.fix.longitude)
