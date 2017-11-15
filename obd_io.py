@@ -99,8 +99,8 @@ class OBDPort:
          debug_display(self._notify_window, 1, "Connecting to ECU...")
          
          try:
-            self.send_command("atz")   # initialize
-            time.sleep(1)
+            self.send_command("atsp0")   # initialize was atz - changed to atsp0 to search protocol
+            time.sleep(2)          # set to 2 seconds for protocol search 
          except serial.SerialException:
             self.State = 0
             return None
