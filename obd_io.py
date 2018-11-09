@@ -100,10 +100,10 @@ class OBDPort:
          
          try:
             self.send_command("atz")   # initialize
-            time.sleep(500)
+            time.sleep(.500)
             self.send_command("atsp00")   # protocol set, 00 = auto,
             #Try different protocols if it does not connect
-            time.sleep(500)
+            time.sleep(.500)
          except serial.SerialException:
             self.State = 0
             return None
