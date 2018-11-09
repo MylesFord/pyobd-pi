@@ -42,8 +42,8 @@ def file_setup(filename):
 
     header.append("time")
 
-    if GPS_D:
-		header.extend(["GPSmph","GPStrack","GPSlat","GPSlong","GPSalt","GPSsats"])
+    if GPS_D:    
+	header.extend(["GPSmph","GPStrack","GPSlat","GPSlong","GPSalt","GPSsats"])
     if TEMP_H:
         header.append("temp_h")
     if TEMP_P:
@@ -86,7 +86,8 @@ def get_sense_data():
 		#sense_data.append(gpsd.fix.sats)
 		sense_data.append("sats")
 		
-		print 'speed (m/s) ' , gpsd.fix.speed
+		print 'speed (mph) ' , gpsd.fix.speed*2.236
+		#sense.set_pixel(7,0,whote)`
     
     if TEMP_H:
         sense_data.append(sense.get_temperature_from_humidity())
@@ -191,6 +192,7 @@ if ENABLE_CAMERA: camera = picamera.PiCamera()
 
 while run==True:
     sense_data = get_sense_data()
+    gpsd.next()  #get the latest GPS data from GPSD help with delays
 
     #logging_event,run = check_input # causes a crash
     #logging_event = logging
