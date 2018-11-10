@@ -9,6 +9,9 @@ from select import select
 import picamera
 from threading import Thread
 #import gps
+import pygame
+from pygame.locals import *
+from sense_hat import SenseHat
 
 from gps import *
 import setgps10hz  ## sets ublox gps receiver to 10 hz
@@ -28,13 +31,14 @@ MAG=True
 GYRO=True
 DELAY = 0
 BASENAME = "Fall"
-WRITE_FREQUENCY = 10
+WRITE_FREQUENCY = 20
 ENABLE_CAMERA = False
-LOG_AT_START = True
+LOG_AT_START = False
+pygame.init
 
 def hello():
 	print("MEGR3092 Logger")
-	print("Press Joystick up to quit, Left to stop, right to start.")
+	print("Press Joystick up to start, Left to quit, down to stop.")
 
 
 def file_setup(filename):
@@ -157,6 +161,34 @@ def timed_log():
             log_data()
         time.sleep(DELAY)
 
+def endme():
+        sense.clear
+        
+def check_input():
+        running = True
+        logging_event = False
+        for event in sense.stick.get_events(): #get joystick events
+		if event.action == 'pressed' and event.direction == "down":
+			print("Logging Disabled")
+			#sense.show_letter("!",text_colour=[100,0,0])
+			sense.set_pixel(0, 0, [255, 0, 0])
+                        running = True
+			logging_event = True
+		#elif (not GPIO.input(switchpin)) or (event.action == 'pressed' and event.direction == "up"):
+		elif event.action == 'pressed' and event.direction == "up": 
+			print("Logging Enabled")
+			#sense.show_letter("X",text_colour=[0,100,0])
+                        running = True
+                        logging_event = True
+                        sense.set_pixel(0, 0, [0, 255, 0])
+		elif (event.action == 'pressed' and event.direction == "left"):
+                        #sense.show_letter("!",text_colour=[100,0,0])
+                        sense.set_pixel(0, 0, [255, 0, 0])
+                        logging_event = False
+                        running = False
+                        print("Exiting")
+			endme()
+        return logging_event,running    
 
 ## Main Program
 hello()
@@ -166,63 +198,68 @@ gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
     
 sense = SenseHat()
 
+sense.set_pixel(0, 0, [0, 0, 255])
+
 run=True
 running = False
 logging_event = False
+logstate = False
 logging=LOG_AT_START
-show_state(logging)
+#show_state(logging)
 dev = get_joystick()
 batch_data= []
 
-#if BASENAME == "":
-#    filename = "SenseLog-"+str(datetime.now())+".csv"
-#else:
-#    filename = BASENAME+"-"+str(datetime.now())+".csv"
-
-filename = "Log-"+str(datetime.now())+".csv"
-
-file_setup(filename)
+#for new filenames each command
+#filename = "log/"+"Log-"+str(datetime.now())+".csv"
+#file_setup(filename)
 
 if DELAY > 0:
     Thread(target= timed_log).start()
 
-
-if ENABLE_CAMERA: camera = picamera.PiCamera()
-
-
+sense.set_pixel(0, 0, [255, 0, 0])
+                        
+if ENABLE_CAMERA: camera = picamera.PiCamera
 while run==True:
+    ledrotate = 0;  
+        
     sense_data = get_sense_data()
     gpsd.next()  #get the latest GPS data from GPSD help with delays
 
-    #logging_event,run = check_input # causes a crash
+    logging_event, run = check_input()
     #logging_event = logging
 
     #logging_event,run = check_inputj() # causes a crash
     #logging_event = logging
 
+    if logging_event and logging:
+            logging = False
     
-    #if logging_event != running	:
-    #logging_event = running
-
-
-    if logging_event:
-        logging = not(logging)
-        show_state(logging)
+    elif logging_event :
+            logging = True
+            #for new file names each run
+            localtime = time.localtime(time.time())
+		
+            filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
+            file_setup(filename)
 
     if logging == True and DELAY == 0:
+        sense.set_pixel(0, 0, [0, 0, 255])
         log_data()
+
 
     if len(batch_data) >= WRITE_FREQUENCY:
         with open(filename,"a") as f:
             for line in batch_data:
                 f.write(line + "\n")
             batch_data = []
-
-
+            
+#when run = False
 with open(filename,"a") as f:
     for line in batch_data:
         f.write(line + "\n")
         batch_data = []
 
-
+sense.set_pixel(0, 0, [255, 0, 0])
+time.sleep(2)
 sense.clear()
+
