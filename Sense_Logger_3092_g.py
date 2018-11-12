@@ -192,6 +192,7 @@ def check_input():
 
 ## Main Program
 hello()
+setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
