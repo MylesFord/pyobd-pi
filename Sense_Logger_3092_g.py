@@ -254,13 +254,15 @@ while run==True:
                 f.write(line + "\n")
             batch_data = []
             
-#when run = False
-with open(filename,"a") as f:
-    for line in batch_data:
-        f.write(line + "\n")
-        batch_data = []
-
+try:
+    with open(filename,"a") as f:
+        for line in batch_data:
+                f.write(line + "\n")
+                batch_data = []
+                print(".")
+except:
+        print("No log file to close")
 sense.set_pixel(0, 0, [255, 0, 0])
-time.sleep(2)
+time.sleep(1)
 sense.clear()
 
