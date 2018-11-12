@@ -1,5 +1,6 @@
 ##Modified Sense Logger Example for MEGR3092
 ##measures sense hat sensors and GPS
+#new comment
 
 from datetime import datetime
 import time
