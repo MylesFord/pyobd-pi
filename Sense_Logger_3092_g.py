@@ -78,8 +78,12 @@ def get_joystick():
 
 ## Function to collect data from the sense hat and build a string
 def get_sense_data():
+    localtime = datetime.now()
+    current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
+    log_string = current_time
+
     sense_data=[]
-    sense_data.append(datetime.now())  ##moved timestamp to beginning for megalogviewer compatability
+    sense_data.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
     
     if GPS_D:
 		gpsd.next()  #get the latest GPS data from GPSD
