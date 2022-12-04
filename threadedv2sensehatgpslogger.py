@@ -218,7 +218,9 @@ except:
         time.sleep(1)
 	
 a = threading.Thread(target= get_gps_data, name='GPS data thread')
+daemon = True
 b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
+daemon = True
 
 a.start()
 b.start()
