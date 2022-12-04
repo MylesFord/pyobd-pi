@@ -1,7 +1,4 @@
-try:
-    import threading as _threading
-except ImportError:
-    import dummy_threading as _threading
+from threading import Thread
 import time
 
 def print_1():
