@@ -7,15 +7,13 @@ import time
 from sense_hat import SenseHat
 from select import select
 from threading import Thread
-#import gps
-import pygame
-from pygame.locals import *
-from sense_hat import SenseHat
 
+#import sensors
+from sense_hat import SenseHat
 from gps import *
 import setgps10hz  ## sets ublox gps receiver to 10 hz
-#from time import *
 
+#from time import *
 global gpsd
 
 ## Logging Settings
@@ -215,7 +213,4 @@ try:
                 print(".")
 except:
         print("No log file to close")
-sense.set_pixel(0, 0, [255, 0, 0])
-time.sleep(1)
-sense.clear()
-
+        time.sleep(1)
