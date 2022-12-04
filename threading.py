@@ -1,33 +1,27 @@
-import threading
-import time
+from time import sleep, perf_counter
+from threading import Thread
 
-exitFlag = 0
 
-class myThread (threading.Thread):
-   def __init__(self, threadID, name, counter):
-      threading.Thread.__init__(self)
-      self.threadID = threadID
-      self.name = name
-      self.counter = counter
-   def run(self):
-      print ("Starting " + self.name)
-      print_time(self.name, 5, self.counter)
-      print ("Exiting " + self.name)
+def task():
+    print('Starting a task...')
+    sleep(1)
+    print('done')
 
-def print_time(threadName, counter, delay):
-   while counter:
-      if exitFlag:
-         threadName.exit()
-      time.sleep(delay)
-      print ("%s: %s" % (threadName, time.ctime(time.time())))
-      counter -= 1
 
-# Create new threads
-thread1 = myThread(1, "Thread-1", 1)
-thread2 = myThread(2, "Thread-2", 2)
+start_time = perf_counter()
 
-# Start new Threads
-thread1.start()
-thread2.start()
+# create two new threads
+t1 = Thread(target=task)
+t2 = Thread(target=task)
 
-print ("Exiting Main Thread")
+# start the threads
+t1.start()
+t2.start()
+
+# wait for the threads to complete
+t1.join()
+t2.join()
+
+end_time = perf_counter()
+
+print(f'It took {end_time- start_time: 0.2f} second(s) to complete.')
