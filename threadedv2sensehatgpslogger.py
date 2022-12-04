@@ -1,12 +1,12 @@
 ##Modified Sense Logger Example for MEGR3092
 ##measures sense hat sensors and GPS
-#new comment
+#threading attempt
 
 from datetime import datetime
 import time
 from sense_hat import SenseHat
 from select import select
-from threading import Thread
+import threading 
 
 #import sensors
 from sense_hat import SenseHat
@@ -119,15 +119,6 @@ def get_sense_data():
         sense_data.extend([gyro_x,gyro_y,gyro_z])
 
         return sense_data    
-
-
-def show_state(logging):
-    if logging:
-                print("Logging on")
-                sense.show_letter("X",text_colour=[0,100,0])
-    else:
-                print("Logging off")
-                sense.show_letter("!",text_colour=[100,0,0])
 		
 
 
