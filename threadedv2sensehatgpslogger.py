@@ -88,7 +88,8 @@ def get_gps_data():
 		
                 print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r",
 		#sense.set_pixel(7,0,whote)`
-	return sense_data
+		
+		return sense_data
 
 def get_hat_data():
     localtime = datetime.now()
@@ -127,8 +128,8 @@ def get_hat_data():
     if GYRO:
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
         sense_data.extend([gyro_x,gyro_y,gyro_z])
-
-        return sense_data    
+	
+	return sense_data    
 		
 
 
