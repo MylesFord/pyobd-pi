@@ -5,11 +5,11 @@ import threading
 
 
 def print_cube(num):
-    # function to print cube of given num
+    #function to print cube 
     print("Cube: {}" .format(num * num * num))
     
 def print_square(num):
-    # function to print square of given num
+    # function to print square of given 
     print("Square: {}" .format(num * num))
     
 if __name__ =="__main__":
