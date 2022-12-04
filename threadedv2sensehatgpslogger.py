@@ -31,7 +31,6 @@ BASENAME = "Fall"
 WRITE_FREQUENCY =10
 ENABLE_CAMERA = False
 LOG_AT_START = True
-pygame.init
 
 def hello():
 	print("MEGR3092 Logger")
