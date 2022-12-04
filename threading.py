@@ -24,4 +24,4 @@ t2.join()
 
 end_time = perf_counter()
 
-print(f'It took {end_time- start_time: 0.2f} second(s) to complete.')
+printf('It took {end_time- start_time: 0.2f} second(s) to complete.')
