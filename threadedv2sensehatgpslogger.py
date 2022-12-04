@@ -143,9 +143,6 @@ def timed_log():
             log_data()
         time.sleep(DELAY)
 
-def endme():
-        sense.clear
-        
 
 ## Main Program
 hello()
@@ -156,7 +153,6 @@ gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
     
 sense = SenseHat()
 
-sense.set_pixel(0, 0, [0, 0, 255])
 
 run=True
 running = False
@@ -173,11 +169,11 @@ batch_data= []
 if DELAY > 0:
     Thread(target= timed_log).start()
 
-sense.set_pixel(0, 0, [255, 0, 0])                        
+         
 while run==True:
     ledrotate = 0;  
         
-    sense_data = get_gps_data()
+    sense_data = get_gps_data() + get_hat_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
 
 
