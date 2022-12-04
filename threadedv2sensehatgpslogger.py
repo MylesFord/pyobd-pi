@@ -197,7 +197,7 @@ while run==True:
             file_setup(filename)
 
     if logging == True and DELAY == 0:
-        sense_data = get_sense_data()
+        sense_data = get_gps_data()
         log_data()
 
 
