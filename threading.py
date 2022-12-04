@@ -1,5 +1,5 @@
 from threading import *
-def show()
+def show():
   print("Child Thread")
 t = Thread(target=show())
 t.start()
