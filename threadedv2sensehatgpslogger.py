@@ -66,7 +66,7 @@ def file_setup(filename):
 
 
 ## Function to collect data from the sense hat and build a string
-def get_sense_data():
+def get_gps_data():
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
     current_time = str(datetime.now().time()) ## for simplified mega log viewer 
@@ -88,7 +88,18 @@ def get_sense_data():
 		
                 print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r",
 		#sense.set_pixel(7,0,whote)`
-    
+	return sense_data
+
+def get_hat_data():
+    localtime = datetime.now()
+    ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
+    current_time = str(datetime.now().time()) ## for simplified mega log viewer 
+    ##current_time = time.time() ## for mclaren atlas
+    log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
+
+    sense_data=[]
+    sense_data.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
+
     if TEMP_H:
         sense_data.append(sense.get_temperature_from_humidity())
 
@@ -165,7 +176,7 @@ sense.set_pixel(0, 0, [255, 0, 0])
 while run==True:
     ledrotate = 0;  
         
-    sense_data = get_sense_data()
+    sense_data = get_gps_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
 
 
@@ -204,3 +215,9 @@ try:
 except:
         print("No log file to close")
         time.sleep(1)
+	
+a = threading.Thread(target= get_gps_data, name='GPS data thread')
+b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
+
+a.start()
+b.start()
