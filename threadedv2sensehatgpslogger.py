@@ -70,7 +70,7 @@ def file_setup(filename2):
     if GYRO:
         header.extend(["gyro_x","gyro_y","gyro_z"])
 
-    with open(filename2,"x") as g:
+    with open(filename2,"w") as g:
         g.write(",".join(str(value) for value in header)+ "\n")
 
 
