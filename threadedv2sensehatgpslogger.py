@@ -48,7 +48,7 @@ def file_setup(filename):
         f.write(",".join(str(value) for value in header)+ "\n")
 
 def file_setup(filename2):
-    header =[]
+    header2 =[]
 
     header.append("sensehat_Logger\ntime")
 
@@ -70,7 +70,7 @@ def file_setup(filename2):
         header.extend(["gyro_x","gyro_y","gyro_z"])
 
     with open(filename2,"w") as g:
-        g.write(",".join(str(value) for value in header)+ "\n")
+        g.write(",".join(str(value) for value in header2)+ "\n")
 
 
 
