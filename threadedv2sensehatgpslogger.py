@@ -70,7 +70,7 @@ def file_setup(filename2):
     if GYRO:
         header.extend(["gyro_x","gyro_y","gyro_z"])
 
-    with open(filename2,"w") as g:
+    with open(filename2,"x") as g:
         g.write(",".join(str(value) for value in header)+ "\n")
 
 
@@ -226,8 +226,8 @@ except:
         time.sleep(1)
 	
 a = threading.Thread(target= get_gps_data, name='GPS data thread')
-daemon = True
 b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
+daemon = True
 
 a.start()
 b.start()
