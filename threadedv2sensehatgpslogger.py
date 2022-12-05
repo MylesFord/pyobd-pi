@@ -197,10 +197,10 @@ while run==True:
             #for new file names each run
             localtime = time.localtime(time.time())
 		
-            filename = "log1/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
+            filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
             file_setup1(filename)
-	    filename2 = "log2/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
-            file_setup2(filename2)
+#	    filename2 = "log2/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
+ #           file_setup2(filename2)
 
     if logging == True and DELAY == 0:
         sense_data = get_gps_data()
