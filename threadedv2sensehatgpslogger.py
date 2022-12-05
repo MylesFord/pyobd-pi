@@ -140,9 +140,9 @@ def log_data1():
     output_string1 = ",".join(str(value) for value in sense_data)
     batch_data.append(output_string1)
 	
-def log_data2():
-    output_string2 = ",".join(str(value) for value in sense_data2)
-    batch_data.append(output_string2)
+#def log_data2():
+ #   output_string2 = ",".join(str(value) for value in sense_data2)
+  #  batch_data.append(output_string2)
 	
 def timed_log():
     while run:
