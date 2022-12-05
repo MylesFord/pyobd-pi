@@ -36,7 +36,7 @@ def hello():
 	print("Press Ctrl-C to stop.")
 
 
-def file_setup(filename):
+def file_setup1(filename):
     header =[]
 
     header.append("GPS_Logger\ntime")
@@ -47,7 +47,7 @@ def file_setup(filename):
     with open(filename,"w") as f:
         f.write(",".join(str(value) for value in header)+ "\n")
 
-def file_setup(filename2):
+def file_setup2(filename2):
     header2 =[]
 
     header2.append("sensehat_Logger\ntime")
@@ -198,9 +198,9 @@ while run==True:
             localtime = time.localtime(time.time())
 		
             filename = "log1/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
-            file_setup(filename)
+            file_setup1(filename)
 	    filename2 = "log2/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
-            file_setup(filename2)
+            file_setup2(filename2)
 
     if logging == True and DELAY == 0:
         sense_data = get_gps_data()
