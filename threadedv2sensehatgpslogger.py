@@ -4,7 +4,6 @@
 
 from datetime import datetime
 import time
-from sense_hat import SenseHat
 from select import select
 import threading 
 
@@ -180,10 +179,10 @@ if DELAY > 0:
 
          
 while run==True:
-    ledrotate = 0;  
         
     sense_data = get_gps_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
+    sense_data = get_hat_data()	
 
 
     #logging_event,run = check_inputj() # causes a crash
