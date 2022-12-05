@@ -48,7 +48,7 @@ def file_setup(filename):
     with open(filename,"w") as f:
         f.write(",".join(str(value) for value in header)+ "\n")
 
-def file_setup2(filename):
+def file_setup(filename):
     header =[]
 
     header.append("sensehat_Logger\ntime")
@@ -226,7 +226,6 @@ except:
 a = threading.Thread(target= get_gps_data, name='GPS data thread')
 daemon = True
 b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
-daemon = True
 
 a.start()
 b.start()
