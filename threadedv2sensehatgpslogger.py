@@ -50,24 +50,24 @@ def file_setup(filename):
 def file_setup(filename2):
     header2 =[]
 
-    header.append("sensehat_Logger\ntime")
+    header2.append("sensehat_Logger\ntime")
 
     if TEMP_H:
-        header.append("temp_h")
+        header2.append("temp_h")
     if TEMP_P:
-        header.append("temp_p")
+        header2.append("temp_p")
     if HUMIDITY:
-        header.append("humidity")
+        header2.append("humidity")
     if PRESSURE:
-        header.append("pressure")
+        header2.append("pressure")
     if ORIENTATION:
-        header.extend(["pitch","roll","yaw"])
+        header2.extend(["pitch","roll","yaw"])
     if MAG:
-        header.extend(["mag_x","mag_y","mag_z"])
+        header2.extend(["mag_x","mag_y","mag_z"])
     if ACCELERATION:
-        header.extend(["accel_x","accel_y","accel_z"])
+        header2.extend(["accel_x","accel_y","accel_z"])
     if GYRO:
-        header.extend(["gyro_x","gyro_y","gyro_z"])
+        header2.extend(["gyro_x","gyro_y","gyro_z"])
 
     with open(filename2,"w") as g:
         g.write(",".join(str(value) for value in header2)+ "\n")
