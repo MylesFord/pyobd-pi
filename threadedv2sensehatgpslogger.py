@@ -204,6 +204,7 @@ while run==True:
 
     if logging == True and DELAY == 0:
         sense_data = get_gps_data()
+	sense_data2 = get_hat_data()
         log_data1()
 	log_data2()
 
