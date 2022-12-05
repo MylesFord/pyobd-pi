@@ -48,7 +48,7 @@ def file_setup(filename):
     with open(filename,"w") as f:
         f.write(",".join(str(value) for value in header)+ "\n")
 
-def file_setup(filename):
+def file_setup(filename2):
     header =[]
 
     header.append("sensehat_Logger\ntime")
@@ -70,8 +70,8 @@ def file_setup(filename):
     if GYRO:
         header.extend(["gyro_x","gyro_y","gyro_z"])
 
-    with open(filename,"w") as f:
-        f.write(",".join(str(value) for value in header)+ "\n")
+    with open(filename2,"w") as g:
+        g.write(",".join(str(value) for value in header)+ "\n")
 
 
 
@@ -200,6 +200,8 @@ while run==True:
 		
             filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
             file_setup(filename)
+	    filename2 = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
+            file_setup(filename2)
 
     if logging == True and DELAY == 0:
         sense_data = get_gps_data()
