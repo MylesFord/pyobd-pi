@@ -44,6 +44,15 @@ def file_setup(filename):
 
     if GPS_D:    
         header.extend(["GPSmph","GPStrack","GPSlat","GPSlong","GPSalt","GPSsats"])
+
+    with open(filename,"w") as f:
+        f.write(",".join(str(value) for value in header)+ "\n")
+
+def file_setup2(filename):
+    header =[]
+
+    header.append("sensehat_Logger\ntime")
+
     if TEMP_H:
         header.append("temp_h")
     if TEMP_P:
@@ -65,7 +74,8 @@ def file_setup(filename):
         f.write(",".join(str(value) for value in header)+ "\n")
 
 
-## Function to collect data from the sense hat and build a string
+
+## Function to collect data from the gps and build a string
 def get_gps_data():
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
@@ -87,60 +97,59 @@ def get_gps_data():
                 sense_data.append("sats")
 		
                 print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r",
-		#sense.set_pixel(7,0,whote)`
+	
 		
 		return sense_data
 
 def get_hat_data():
-    localtime = datetime.now()
-    ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
-    current_time = str(datetime.now().time()) ## for simplified mega log viewer 
-    ##current_time = time.time() ## for mclaren atlas
-    log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
-
-    sense_data=[]
-    sense_data.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
+    
+    sense_data2=[]
 
     if TEMP_H:
-        sense_data.append(sense.get_temperature_from_humidity())
+        sense_data2.append(sense.get_temperature_from_humidity())
 
     if TEMP_P:
-        sense_data.append(sense.get_temperature_from_pressure())
+        sense_data2.append(sense.get_temperature_from_pressure())
 
     if HUMIDITY:
-        sense_data.append(sense.get_humidity())
+        sense_data2.append(sense.get_humidity())
 
     if PRESSURE:
-        sense_data.append(sense.get_pressure())
+        sense_data2.append(sense.get_pressure())
 
     if ORIENTATION:
         yaw,pitch,roll = sense.get_orientation().values()
-        sense_data.extend([pitch,roll,yaw])
+        sense_data2.extend([pitch,roll,yaw])
 
     if MAG:
         mag_x,mag_y,mag_z = sense.get_compass_raw().values()
-        sense_data.extend([mag_x,mag_y,mag_z])
+        sense_data2.extend([mag_x,mag_y,mag_z])
 
     if ACCELERATION:
         x,y,z = sense.get_accelerometer_raw().values()
-        sense_data.extend([x,y,z])
+        sense_data2.extend([x,y,z])
 
     if GYRO:
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
-        sense_data.extend([gyro_x,gyro_y,gyro_z])
+        sense_data2.extend([gyro_x,gyro_y,gyro_z])
 	
-	return sense_data    
+	return sense_data2    
 		
 
 
-def log_data():
-    output_string = ",".join(str(value) for value in sense_data)
-    batch_data.append(output_string)
-
+def log_data1():
+    output_string1 = ",".join(str(value) for value in sense_data)
+    batch_data.append(output_string1)
+	
+def log_data2():
+    output_string2 = ",".join(str(value) for value in sense_data2)
+    batch_data.append(output_string2)
+	
 def timed_log():
     while run:
         if logging == True:
-            log_data()
+            log_data1()
+	    log_data2()
         time.sleep(DELAY)
 
 
@@ -173,7 +182,7 @@ if DELAY > 0:
 while run==True:
     ledrotate = 0;  
         
-    sense_data = get_gps_data() + get_hat_data()
+    sense_data = get_gps_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
 
 
