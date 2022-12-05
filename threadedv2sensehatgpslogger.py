@@ -142,7 +142,7 @@ def log_data1():
 	
 def log_data2():
     output_string2 = ",".join(str(value) for value in sense_data2)
-    batch_data.append(output_string2)
+    batch_data2.append(output_string2)
 	
 def timed_log():
     while run:
@@ -169,6 +169,7 @@ logstate = False
 logging=LOG_AT_START
 #show_state(logging)
 batch_data= []
+batch_data2= []
 
 #for new filenames each command
 #filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -214,6 +215,12 @@ while run==True:
             for line in batch_data:
                 f.write(line + "\n")
             batch_data = []
+	
+    if len(batch_data2) >= WRITE_FREQUENCY:
+        with open(filename2,"a") as g:
+            for line in batch_data2:
+                g.write(line + "\n")
+            batch_data2 = []
             
 try:
     with open(filename,"a") as f:
