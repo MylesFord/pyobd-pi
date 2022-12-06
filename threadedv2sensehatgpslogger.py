@@ -151,10 +151,15 @@ def log_data2():
     output_string2 = ",".join(str(value) for value in sense_data2)
     batch_data2.append(output_string2)
 	
-def timed_log():
+def timed_log1():
     while run:
         if logging == True:
             log_data1()
+        time.sleep(DELAY)
+	
+def timed_log2():
+    while run:
+        if logging == True:
 	    log_data2()
         time.sleep(DELAY)
 
@@ -176,7 +181,7 @@ def gpsthread():
 	#file_setup(filename)
 
 	if DELAY > 0:
-	    Thread(target= timed_log).start()
+	    Thread(target= timed_log1).start()
 
 
 	while run==True:
@@ -235,7 +240,7 @@ def hatthread():
 	#file_setup(filename)
 
 	if DELAY > 0:
-	    Thread(target= timed_log).start()
+	    Thread(target= timed_log2).start()
 
 
 	while run==True:
@@ -292,8 +297,8 @@ sense_data2=[]
 batch_data= []
 batch_data2= []
 
-#a = threading.Thread(target= gpsthread, name='GPS data thread')
-#b = threading.Thread(target= hatthread, name='Sense hat data thread')
-#a.start()
-#b.start()	
+a = threading.Thread(target= gpsthread, name='GPS data thread')
+b = threading.Thread(target= hatthread, name='Sense hat data thread')
+a.start()
+b.start()	
 	
