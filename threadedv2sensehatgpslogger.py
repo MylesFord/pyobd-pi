@@ -50,7 +50,7 @@ def file_setup1(filename):
 def file_setup2(filename2):
     header2 =[]
 
-    header2.append("sensehat_Logger\r")
+    header2.append("sensehat_Logger\r\n")
 
     if TEMP_H:
         header2.append("temp_h")
