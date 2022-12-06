@@ -97,7 +97,8 @@ def get_gps_data():
                 #sense_data.append(gpsd.fix.sats)
                 sense_data.append("sats")
 		
-                print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r",
+                print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r\n",
+		print sense_data, "          \r\n"
 	
 		
 		return sense_data
@@ -139,6 +140,8 @@ def get_hat_data():
     if GYRO:
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
         sense_data2.extend([gyro_x,gyro_y,gyro_z])
+	
+	print sense_data2, "          \r\n"
 	
 	return sense_data2    
 		
