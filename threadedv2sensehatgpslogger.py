@@ -162,11 +162,6 @@ def timed_log():
 	
 def gpsthread():
 
-	run=True
-	running = False
-	logging_event = True
-	logstate = False
-	logging=LOG_AT_START
 	#show_state(logging)
 	batch_data= []
 
@@ -222,13 +217,6 @@ def gpsthread():
 
 def hatthread():
 
-
-	run=True
-	running = False
-	logging_event = True
-	logstate = False
-	logging=LOG_AT_START
-	#show_state(logging)
 	batch_data2= []
 
 	#for new filenames each command
@@ -285,6 +273,13 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+
+
+run=True
+running = False
+logging_event = True
+logstate = False
+logging=LOG_AT_START
 
 sense = SenseHat()
 sense_data=[]
