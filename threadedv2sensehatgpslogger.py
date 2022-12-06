@@ -39,7 +39,7 @@ def hello():
 def file_setup1(filename):
     header =[]
 
-    header.append("GPS_Logger")
+    header.append("GPS_Logger\ntime")
 
     if GPS_D:    
         header.extend(["GPSmph","GPStrack","GPSlat","GPSlong","GPSalt","GPSsats"])
@@ -50,7 +50,7 @@ def file_setup1(filename):
 def file_setup2(filename2):
     header2 =[]
 
-    header2.append("sensehat_Logger\ntime")
+    header2.append("sensehat_Logger\")
 
     if TEMP_H:
         header2.append("temp_h")
