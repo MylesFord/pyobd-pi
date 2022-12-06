@@ -158,12 +158,7 @@ def timed_log():
 	    log_data2()
         time.sleep(DELAY)
 
-hello()
 
-a = threading.Thread(target= gpsthread, name='GPS data thread')
-b = threading.Thread(target= hatthread, name='Sense hat data thread')
-a.start()
-b.start()
 	
 def gpsthread():
 
@@ -293,5 +288,10 @@ def hatthread():
 	except:
 		print("No log file to close")
 		time.sleep(1)	
-	
+hello()
+
+a = threading.Thread(target= gpsthread, name='GPS data thread')
+b = threading.Thread(target= hatthread, name='Sense hat data thread')
+a.start()
+b.start()	
 	
