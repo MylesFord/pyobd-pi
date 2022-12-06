@@ -31,6 +31,8 @@ BASENAME = "Fall"
 WRITE_FREQUENCY =2
 ENABLE_CAMERA = False
 LOG_AT_START = True
+sense_data=[]
+sense_data2=[]
 
 def hello():
 	print("MEGR3092 Logger")
@@ -82,6 +84,7 @@ def get_gps_data():
     ##current_time = time.time() ## for mclaren atlas
     log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
 
+    sense_data=[]
     sense_data.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
     
     if GPS_D:
@@ -106,7 +109,7 @@ def get_hat_data():
     ##current_time = time.time() ## for mclaren atlas
     log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
 
-    
+    sense_data2=[]
     sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
 
     if TEMP_H:
@@ -136,8 +139,6 @@ def get_hat_data():
     if GYRO:
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
         sense_data2.extend([gyro_x,gyro_y,gyro_z])
-	
-	print 'Temp from h ' , sense.get_temperature_from_humidity(),"           \r",
 	
 	return sense_data2    
 		
@@ -292,8 +293,7 @@ gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 
 
 sense = SenseHat()
-sense_data=[]
-sense_data2=[]
+
 batch_data= []
 batch_data2= []
 
