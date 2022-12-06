@@ -50,7 +50,7 @@ def file_setup1(filename):
 def file_setup2(filename2):
     header2 =[]
 
-    header2.append("sensehat_Logger\n")
+    header2.append("sensehat_Logger\r\n")
 
     if TEMP_H:
         header2.append("temp_h")
@@ -70,7 +70,7 @@ def file_setup2(filename2):
         header2.extend(["gyro_x","gyro_y","gyro_z"])
 
     with open(filename2,"w") as g:
-        g.write(join(str(value) for value in header2)+ "\n")
+        g.write("\n")
 
 
 
