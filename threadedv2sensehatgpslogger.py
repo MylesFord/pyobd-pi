@@ -158,7 +158,7 @@ def timed_log():
 	    log_data2()
         time.sleep(DELAY)
 
-hello():
+hello()
 	a = threading.Thread(target= gpsthread, name='GPS data thread')
 	b = threading.Thread(target= hatthread, name='Sense hat data thread')
 	a.start()
