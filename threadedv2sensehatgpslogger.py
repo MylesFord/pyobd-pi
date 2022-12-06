@@ -147,7 +147,6 @@ def log_data1():
 def log_data2():
     output_string2 = ",".join(str(value) for value in sense_data2)
     batch_data2.append(output_string2)
-    print batch_data2
 	
 	
 def gpsthread():
