@@ -162,6 +162,12 @@ def timed_log():
 	
 def gpsthread():
 
+	
+	run=True
+	running = False
+	logging_event = True
+	logstate = False
+	logging=LOG_AT_START
 	#show_state(logging)
 	batch_data= []
 
@@ -217,6 +223,11 @@ def gpsthread():
 
 def hatthread():
 
+	run=True
+	running = False
+	logging_event = True
+	logstate = False
+	logging=LOG_AT_START
 	batch_data2= []
 
 	#for new filenames each command
