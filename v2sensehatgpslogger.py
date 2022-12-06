@@ -28,7 +28,7 @@ MAG=True
 GYRO=True
 DELAY = 0
 BASENAME = "Fall"
-WRITE_FREQUENCY =10
+WRITE_FREQUENCY =20
 ENABLE_CAMERA = False
 LOG_AT_START = True
 
@@ -120,16 +120,6 @@ def get_sense_data():
         return sense_data    
 
 
-def show_state(logging):
-    if logging:
-                print("Logging on")
-                sense.show_letter("X",text_colour=[0,100,0])
-    else:
-                print("Logging off")
-                sense.show_letter("!",text_colour=[100,0,0])
-		
-
-
 def log_data():
     output_string = ",".join(str(value) for value in sense_data)
     batch_data.append(output_string)
@@ -140,8 +130,8 @@ def timed_log():
             log_data()
         time.sleep(DELAY)
 
-def endme():
-        sense.clear
+#def endme():
+ #       sense.clear
         
 
 ## Main Program
