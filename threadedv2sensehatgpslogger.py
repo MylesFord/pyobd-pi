@@ -98,7 +98,6 @@ def get_gps_data():
                 sense_data.append("sats")
 		
                 print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r\n",
-		print sense_data, "          \r\n"
 	
 		
 		return sense_data
