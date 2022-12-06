@@ -34,7 +34,7 @@ LOG_AT_START = True
 
 def hello():
 	print("MEGR3092 Logger")
-	print("Press Ctrl-C to stop.")
+	print("Press Ctrl-\ to stop.")
 
 def file_setup1(filename):
     header =[]
@@ -136,6 +136,8 @@ def get_hat_data():
     if GYRO:
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
         sense_data2.extend([gyro_x,gyro_y,gyro_z])
+	
+	print 'Temp from h ' , sense.get_temperature_from_humidity(),"           \r",
 	
 	return sense_data2    
 		
