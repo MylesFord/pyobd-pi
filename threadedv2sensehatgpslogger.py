@@ -103,14 +103,8 @@ def get_gps_data():
 		return sense_data
 
 def get_hat_data():
-    localtime = datetime.now()
-    ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
-    current_time = str(datetime.now().time()) ## for simplified mega log viewer 
-    ##current_time = time.time() ## for mclaren atlas
-    log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
-
+	
     sense_data2=[]
-    sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
 
     if TEMP_H:
         sense_data2.append(sense.get_temperature_from_humidity())
@@ -156,17 +150,17 @@ def log_data2():
     batch_data2.append(output_string2)
     print batch_data2, "             \r\n"
 	
-#def timed_log1():
- #   while run:
-  #      if logging == True:
-   #         log_data1()
-    #    time.sleep(DELAY)
+def timed_log1():
+    while run:
+        if logging == True:
+            log_data1()
+        time.sleep(DELAY)
 	
-#def timed_log2():
- #   while run:
-  #      if logging == True:
-#	    log_data2()
- #       time.sleep(DELAY)
+def timed_log2():
+    while run:
+        if logging == True:
+	    log_data2()
+        time.sleep(DELAY)
 
 
 	
@@ -185,8 +179,8 @@ def gpsthread():
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
 
-	#if DELAY > 0:
-	 #   Thread(target= timed_log1).start()
+	if DELAY > 0:
+	    Thread(target= timed_log1).start()
 
 
 	while run==True:
@@ -244,8 +238,8 @@ def hatthread():
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
 
-#	if DELAY > 0:
-#	    Thread(target= timed_log2).start()
+	if DELAY > 0:
+	    Thread(target= timed_log2).start()
 
 
 	while run==True:
