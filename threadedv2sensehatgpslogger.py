@@ -187,7 +187,7 @@ def gpsthread():
 
 	    if logging == True and DELAY == 0:
 		sense_data = get_gps_data()
-		log_data1()
+		#log_data1()
 
 
 	    if len(batch_data) >= WRITE_FREQUENCY:
