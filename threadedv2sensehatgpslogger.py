@@ -166,6 +166,7 @@ def gpsthread():
 	logstate = False
 	logging=LOG_AT_START
 	#show_state(logging)
+	batch_data= []
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -226,6 +227,7 @@ def hatthread():
 	logstate = False
 	logging=LOG_AT_START
 	#show_state(logging)
+	batch_data2= []
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
