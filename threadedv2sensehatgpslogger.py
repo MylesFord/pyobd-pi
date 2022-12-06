@@ -82,7 +82,6 @@ def get_gps_data():
     ##current_time = time.time() ## for mclaren atlas
     log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
 
-    sense_data=[]
     sense_data.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
     
     if GPS_D:
@@ -167,7 +166,6 @@ def gpsthread():
 	logstate = False
 	logging=LOG_AT_START
 	#show_state(logging)
-	batch_data= []
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -228,7 +226,6 @@ def hatthread():
 	logstate = False
 	logging=LOG_AT_START
 	#show_state(logging)
-	batch_data2= []
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -288,7 +285,8 @@ gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 sense = SenseHat()
 sense_data=[]
 sense_data2=[]
-
+batch_data= []
+batch_data2= []
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
 b = threading.Thread(target= hatthread, name='Sense hat data thread')
