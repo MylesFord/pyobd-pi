@@ -31,12 +31,6 @@ WRITE_FREQUENCY =10
 ENABLE_CAMERA = False
 LOG_AT_START = True
 
-def hello():
-	print("MEGR3092 Logger")
-	print("Press Ctrl-C to stop.")
-	
-def hello2():
-	print("thread 2 has been started")
 
 
 def file_setup1(filename):
@@ -162,8 +156,9 @@ def timed_log():
         time.sleep(DELAY)
 
 
-## Main Program
-hello()
+def hello():
+	print("MEGR3092 Logger")
+	print("Press Ctrl-C to stop.")
 setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
@@ -230,7 +225,9 @@ except:
         time.sleep(1)
 	
 
-hello2()  
+def hello2():
+	print("thread 2 has been started")
+	
 sense = SenseHat()
 
 
