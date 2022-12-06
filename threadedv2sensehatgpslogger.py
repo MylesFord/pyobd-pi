@@ -97,7 +97,7 @@ def get_gps_data():
                 #sense_data.append(gpsd.fix.sats)
                 sense_data.append("sats")
 		
-                print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r\n",
+                print 'speed (mph) ' , gpsd.fix.speed*2.236,"           \r,
 	
 		
 		return sense_data
@@ -140,7 +140,6 @@ def get_hat_data():
         gyro_x,gyro_y,gyro_z = sense.get_gyroscope_raw().values()
         sense_data2.extend([gyro_x,gyro_y,gyro_z])
 	
-	print sense_data2, "          \r\n"
 	
 	return sense_data2    
 		
@@ -155,6 +154,7 @@ def log_data2():
     batch_data2= []
     output_string2 = ",".join(str(value) for value in sense_data2)
     batch_data2.append(output_string2)
+    print batch_data2, "             \r\n"
 	
 def timed_log1():
     while run:
