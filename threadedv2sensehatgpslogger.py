@@ -148,7 +148,7 @@ def log_data2():
     batch_data2= []
     output_string2 = ",".join(str(value) for value in sense_data2)
     batch_data2.append(output_string2)
-    print batch_data2, "             \r\n"
+    print batch_data2
 	
 def timed_log1():
     while run:
@@ -173,6 +173,7 @@ def gpsthread():
 	logstate = False
 	logging=LOG_AT_START
 	batch_data= []
+	sense = SenseHat()
 	#show_state(logging)
 
 	#for new filenames each command
@@ -233,6 +234,7 @@ def hatthread():
 	logstate = False
 	logging=LOG_AT_START
 	batch_data2= []
+	sense = SenseHat()
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
