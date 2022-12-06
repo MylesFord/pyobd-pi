@@ -76,6 +76,7 @@ def file_setup2(filename2):
 
 ## Function to collect data from the gps and build a string
 def get_gps_data():
+    sense_data=[]
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
     current_time = str(datetime.now().time()) ## for simplified mega log viewer 
@@ -100,6 +101,7 @@ def get_gps_data():
 		return sense_data
 
 def get_hat_data():
+    sense_data=[]
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
     current_time = str(datetime.now().time()) ## for simplified mega log viewer 
