@@ -53,7 +53,7 @@ def file_setup2(filename2):
     header2.append("sensehat_Logger\n")
 
     if TEMP_H:
-        header2.append("temp_h",axis=0)
+        header2.append("\temp_h")
     if TEMP_P:
         header2.append("temp_p")
     if HUMIDITY:
