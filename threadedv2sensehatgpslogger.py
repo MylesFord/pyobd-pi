@@ -107,7 +107,6 @@ def get_hat_data():
     ##current_time = time.time() ## for mclaren atlas
     log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
 
-    sense_data2=[]
     
     sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
 
@@ -221,8 +220,6 @@ def gpsthread():
 	
 
 def hatthread():
-	
-	sense = SenseHat()
 
 
 	run=True
@@ -287,6 +284,11 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+
+sense = SenseHat()
+sense_data=[]
+sense_data2=[]
+
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
 b = threading.Thread(target= hatthread, name='Sense hat data thread')
