@@ -294,6 +294,7 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 sense_data=[]
 sense_data2=[]
+sense = SenseHat()
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
 daemon = True
