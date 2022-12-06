@@ -174,6 +174,7 @@ def gpsthread():
 	logging_event = True
 	logstate = False
 	logging=LOG_AT_START
+	batch_data= []
 	#show_state(logging)
 
 	#for new filenames each command
@@ -233,6 +234,7 @@ def hatthread():
 	logging_event = True
 	logstate = False
 	logging=LOG_AT_START
+	batch_data2= []
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -294,8 +296,7 @@ sense = SenseHat()
 
 sense_data=[]
 sense_data2=[]
-batch_data= []
-batch_data2= []
+
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
 daemon = True
