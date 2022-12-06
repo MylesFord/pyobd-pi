@@ -100,14 +100,14 @@ def get_gps_data():
 		return sense_data
 
 def get_hat_data():
-    localtime = datetime.now()
-    ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
-    current_time = str(datetime.now().time()) ## for simplified mega log viewer 
-    ##current_time = time.time() ## for mclaren atlas
-    log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
+#    localtime = datetime.now()
+ #   ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
+  #  current_time = str(datetime.now().time()) ## for simplified mega log viewer 
+   # ##current_time = time.time() ## for mclaren atlas
+    #log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
 
     
-    sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
+ #   sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
 
     if TEMP_H:
         sense_data2.append(sense.get_temperature_from_humidity())
@@ -169,7 +169,6 @@ def gpsthread():
 	logging=LOG_AT_START
 	#show_state(logging)
 	batch_data= []
-	sense_data=[]
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -231,7 +230,6 @@ def hatthread():
 	logging=LOG_AT_START
 	#show_state(logging)
 	batch_data2= []
-	sense_data2=[]
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
