@@ -150,19 +150,6 @@ def log_data2():
     batch_data2.append(output_string2)
     print batch_data2
 	
-def timed_log1():
-    while run:
-        if logging == True:
-            log_data1()
-        time.sleep(DELAY)
-	
-def timed_log2():
-    while run:
-        if logging == True:
-	    log_data2()
-        time.sleep(DELAY)
-
-
 	
 def gpsthread():
 
@@ -173,16 +160,11 @@ def gpsthread():
 	logstate = False
 	logging=LOG_AT_START
 	batch_data= []
-	sense = SenseHat()
 	#show_state(logging)
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
-
-	if DELAY > 0:
-	    Thread(target= timed_log1).start()
-
 
 	while run==True:
 
@@ -234,14 +216,10 @@ def hatthread():
 	logstate = False
 	logging=LOG_AT_START
 	batch_data2= []
-	sense = SenseHat()
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
-
-	if DELAY > 0:
-	    Thread(target= timed_log2).start()
 
 
 	while run==True:
