@@ -70,7 +70,7 @@ def file_setup2(filename2):
         header2.extend(["gyro_x","gyro_y","gyro_z"])
 
     with open(filename2,"w") as g:
-        g.write(value in header2,"\n")
+        g.write(header2,"\n")
 
 
 
