@@ -159,10 +159,11 @@ def timed_log():
         time.sleep(DELAY)
 
 hello()
-	a = threading.Thread(target= gpsthread, name='GPS data thread')
-	b = threading.Thread(target= hatthread, name='Sense hat data thread')
-	a.start()
-	b.start()
+
+a = threading.Thread(target= gpsthread, name='GPS data thread')
+b = threading.Thread(target= hatthread, name='Sense hat data thread')
+a.start()
+b.start()
 	
 def gpsthread():
 	print("MEGR3092 Logger")
