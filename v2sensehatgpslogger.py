@@ -28,7 +28,7 @@ MAG=True
 GYRO=True
 DELAY = 0
 BASENAME = "Fall"
-WRITE_FREQUENCY =20
+WRITE_FREQUENCY =100
 ENABLE_CAMERA = False
 LOG_AT_START = True
 
@@ -130,9 +130,6 @@ def timed_log():
             log_data()
         time.sleep(DELAY)
 
-#def endme():
- #       sense.clear
-        
 
 ## Main Program
 hello()
@@ -142,8 +139,6 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
     
 sense = SenseHat()
-
-sense.set_pixel(0, 0, [0, 0, 255])
 
 run=True
 running = False
@@ -159,8 +154,7 @@ batch_data= []
 
 if DELAY > 0:
     Thread(target= timed_log).start()
-
-sense.set_pixel(0, 0, [255, 0, 0])                        
+                  
 while run==True:
     ledrotate = 0;  
         
