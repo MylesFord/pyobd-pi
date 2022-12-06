@@ -143,6 +143,7 @@ def log_data1():
     batch_data= []
     output_string1 = ",".join(str(value) for value in sense_data)
     batch_data.append(output_string1)
+    print batch_data
 	
 def log_data2():
     batch_data2= []
@@ -268,6 +269,8 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 sense_data=[]
 sense_data2=[]
+batch_data= []
+batch_data2= []
 sense = SenseHat()
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
