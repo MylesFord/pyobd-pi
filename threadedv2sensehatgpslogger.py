@@ -76,7 +76,6 @@ def file_setup2(filename2):
 
 ## Function to collect data from the gps and build a string
 def get_gps_data():
-    sense_data=[]
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
     current_time = str(datetime.now().time()) ## for simplified mega log viewer 
@@ -101,7 +100,6 @@ def get_gps_data():
 		return sense_data
 
 def get_hat_data():
-    sense_data=[]
     localtime = datetime.now()
     ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
     current_time = str(datetime.now().time()) ## for simplified mega log viewer 
@@ -177,6 +175,7 @@ def gpsthread():
 	logging=LOG_AT_START
 	#show_state(logging)
 	batch_data= []
+	sense_data=[]
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -236,6 +235,7 @@ def hatthread():
 	logstate = False
 	logging=LOG_AT_START
 	batch_data2= []
+	sense_data2=[]
 
 	#for new filenames each command
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
