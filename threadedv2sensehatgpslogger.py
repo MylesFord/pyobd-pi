@@ -166,14 +166,11 @@ a.start()
 b.start()
 	
 def gpsthread():
-	print("MEGR3092 Logger")
-	print("Press Ctrl-C to stop.")
+
 setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
-    
-sense = SenseHat()
 
 
 run=True
