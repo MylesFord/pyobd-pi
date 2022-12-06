@@ -34,6 +34,9 @@ LOG_AT_START = True
 def hello():
 	print("MEGR3092 Logger")
 	print("Press Ctrl-C to stop.")
+	
+def hello2():
+	print("thread 2 has been started")
 
 
 def file_setup1(filename):
@@ -176,7 +179,6 @@ logstate = False
 logging=LOG_AT_START
 #show_state(logging)
 batch_data= []
-batch_data2= []
 
 #for new filenames each command
 #filename = "log/"+"Log-"+str(datetime.now())+".csv"
@@ -190,8 +192,6 @@ while run==True:
         
     sense_data = get_gps_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
-    sense_data2 = get_hat_data()	
-
 
     #logging_event,run = check_inputj() # causes a crash
     #logging_event = logging
@@ -207,14 +207,10 @@ while run==True:
 		
             filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+"1"+".csv"
             file_setup1(filename)
-	    filename2 = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+"2"+".csv"
-            file_setup2(filename2)
 
     if logging == True and DELAY == 0:
         sense_data = get_gps_data()
-	sense_data2 = get_hat_data()
         log_data1()
-	log_data2()
 
 
     if len(batch_data) >= WRITE_FREQUENCY:
@@ -222,12 +218,6 @@ while run==True:
             for line in batch_data:
                 f.write(line + "\n")
             batch_data = []
-	
-    if len(batch_data2) >= WRITE_FREQUENCY:
-        with open(filename2,"a") as g:
-            for line in batch_data2:
-                g.write(line + "\n")
-            batch_data2 = []
             
 try:
     with open(filename,"a") as f:
@@ -239,8 +229,72 @@ except:
         print("No log file to close")
         time.sleep(1)
 	
-a = threading.Thread(target= get_gps_data, name='GPS data thread')
-b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
+
+hello2()  
+sense = SenseHat()
+
+
+run=True
+running = False
+logging_event = True
+logstate = False
+logging=LOG_AT_START
+#show_state(logging)
+batch_data2= []
+
+#for new filenames each command
+#filename = "log/"+"Log-"+str(datetime.now())+".csv"
+#file_setup(filename)
+
+if DELAY > 0:
+    Thread(target= timed_log).start()
+
+         
+while run==True:
+        
+
+    sense_data2 = get_hat_data()	
+
+
+    #logging_event,run = check_inputj() # causes a crash
+    #logging_event = logging
+
+    if logging_event and logging:
+            logging = False
+    
+    elif logging_event :
+            logging_event = False
+            logging = True
+            #for new file names each run
+            localtime = time.localtime(time.time())
+		
+	    filename2 = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+"2"+".csv"
+            file_setup2(filename2)
+
+    if logging == True and DELAY == 0:
+	sense_data2 = get_hat_data()
+	log_data2()
+
+	
+    if len(batch_data2) >= WRITE_FREQUENCY:
+        with open(filename2,"a") as g:
+            for line in batch_data2:
+                g.write(line + "\n")
+            batch_data2 = []
+            
+try:
+    with open(filename2,"a") as g:
+        for line in batch_data2:
+                g.write(line + "\n")
+                batch_data2 = []
+                print(".")
+except:
+        print("No log file to close")
+        time.sleep(1)	
+	
+	
+a = threading.Thread(target= hello, name='GPS data thread')
+b = threading.Thread(target= hello2, name='Sense hat data thread')
 
 
 a.start()
