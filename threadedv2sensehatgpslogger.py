@@ -169,7 +169,7 @@ def gpsthread():
 
 	while run==True:
 
-	    sense_data = get_gps_data()
+	    #sense_data = get_gps_data()
 	    #gpsd.next()  #get the latest GPS data from GPSD help with delays
 
 	    #logging_event,run = check_inputj() # causes a crash
@@ -189,7 +189,7 @@ def gpsthread():
 
 	    if logging == True and DELAY == 0:
 		sense_data = get_gps_data()
-		Thread(target= log_data1).start()
+		log_data1()
 
 
 	    if len(batch_data) >= WRITE_FREQUENCY:
