@@ -50,7 +50,7 @@ def file_setup1(filename):
 def file_setup2(filename2):
     header2 =[]
 
-    header2.append("sensehat_Logger")
+    header2.append("sensehat_Logger\ntime")
 
     if TEMP_H:
         header2.append("temp_h")
@@ -101,8 +101,15 @@ def get_gps_data():
 		return sense_data
 
 def get_hat_data():
-    
+    localtime = datetime.now()
+    ##current_time = str(localtime.hour)+":"+str(localtime.minute)+":"+str(localtime.second)+"."+str(localtime.microsecond)
+    current_time = str(datetime.now().time()) ## for simplified mega log viewer 
+    ##current_time = time.time() ## for mclaren atlas
+    log_string = current_time[:-3] ##strip last three time decimals to keep atlas happy
+
     sense_data2=[]
+    
+    sense_data2.append(log_string)  ##moved timestamp to beginning for megalogviewer compatability
 
     if TEMP_H:
         sense_data2.append(sense.get_temperature_from_humidity())
@@ -234,7 +241,7 @@ except:
 	
 a = threading.Thread(target= get_gps_data, name='GPS data thread')
 b = threading.Thread(target= get_hat_data, name='Sense hat data thread')
-daemon = True
+
 
 a.start()
 b.start()
