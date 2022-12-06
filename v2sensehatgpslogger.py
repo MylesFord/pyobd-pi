@@ -168,7 +168,7 @@ while run==True:
             filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
             file_setup(filename)
 
-    if logging == True
+    if logging == True:
         sense_data = get_sense_data()
         log_data()
 
