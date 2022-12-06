@@ -183,7 +183,7 @@ while run==True:
         
     sense_data = get_gps_data()
     #gpsd.next()  #get the latest GPS data from GPSD help with delays
-    sense_data = get_hat_data()	
+    sense_data2 = get_hat_data()	
 
 
     #logging_event,run = check_inputj() # causes a crash
