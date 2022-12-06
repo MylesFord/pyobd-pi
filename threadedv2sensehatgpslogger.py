@@ -286,20 +286,14 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 
 
-run=True
-running = False
-logging_event = True
-logstate = False
-logging=LOG_AT_START
-
 sense = SenseHat()
 sense_data=[]
 sense_data2=[]
 batch_data= []
 batch_data2= []
 
-a = threading.Thread(target= gpsthread, name='GPS data thread')
-b = threading.Thread(target= hatthread, name='Sense hat data thread')
-a.start()
-b.start()	
+#a = threading.Thread(target= gpsthread, name='GPS data thread')
+#b = threading.Thread(target= hatthread, name='Sense hat data thread')
+#a.start()
+#b.start()	
 	
