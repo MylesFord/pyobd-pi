@@ -156,17 +156,17 @@ def log_data2():
     batch_data2.append(output_string2)
     print batch_data2, "             \r\n"
 	
-def timed_log1():
-    while run:
-        if logging == True:
-            log_data1()
-        time.sleep(DELAY)
+#def timed_log1():
+ #   while run:
+  #      if logging == True:
+   #         log_data1()
+    #    time.sleep(DELAY)
 	
-def timed_log2():
-    while run:
-        if logging == True:
-	    log_data2()
-        time.sleep(DELAY)
+#def timed_log2():
+ #   while run:
+  #      if logging == True:
+#	    log_data2()
+ #       time.sleep(DELAY)
 
 
 	
@@ -185,8 +185,8 @@ def gpsthread():
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
 
-	if DELAY > 0:
-	    Thread(target= timed_log1).start()
+	#if DELAY > 0:
+	 #   Thread(target= timed_log1).start()
 
 
 	while run==True:
@@ -244,8 +244,8 @@ def hatthread():
 	#filename = "log/"+"Log-"+str(datetime.now())+".csv"
 	#file_setup(filename)
 
-	if DELAY > 0:
-	    Thread(target= timed_log2).start()
+#	if DELAY > 0:
+#	    Thread(target= timed_log2).start()
 
 
 	while run==True:
@@ -292,7 +292,8 @@ setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
 
 #global gpsd #bring it in scope
 gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
-
+sense_data=[]
+sense_data2=[]
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
 daemon = True
