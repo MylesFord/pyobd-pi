@@ -31,8 +31,9 @@ BASENAME = "Fall"
 WRITE_FREQUENCY =2
 ENABLE_CAMERA = False
 LOG_AT_START = True
-sense_data=[]
-sense_data2=[]
+
+global sense_data=[]
+global sense_data2=[]
 
 def hello():
 	print("MEGR3092 Logger")
