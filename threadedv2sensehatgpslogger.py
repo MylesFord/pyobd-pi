@@ -32,7 +32,9 @@ WRITE_FREQUENCY =10
 ENABLE_CAMERA = False
 LOG_AT_START = True
 
-
+def hello():
+	print("MEGR3092 Logger")
+	print("Press Ctrl-C to stop.")
 
 def file_setup1(filename):
     header =[]
@@ -156,8 +158,13 @@ def timed_log():
 	    log_data2()
         time.sleep(DELAY)
 
-
-def hello():
+hello():
+	a = threading.Thread(target= gpsthread, name='GPS data thread')
+	b = threading.Thread(target= hatthread, name='Sense hat data thread')
+	a.start()
+	b.start()
+	
+def gpsthread():
 	print("MEGR3092 Logger")
 	print("Press Ctrl-C to stop.")
 setgps10hz.main() #sends command to GPS to force 10hz for ublox hardware
@@ -226,8 +233,7 @@ except:
         time.sleep(1)
 	
 
-def hello2():
-	print("thread 2 has been started")
+def hatthread():
 	
 sense = SenseHat()
 
@@ -291,9 +297,3 @@ except:
         time.sleep(1)	
 	
 	
-a = threading.Thread(target= hello, name='GPS data thread')
-b = threading.Thread(target= hello2, name='Sense hat data thread')
-
-
-a.start()
-b.start()
