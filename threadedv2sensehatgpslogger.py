@@ -270,7 +270,6 @@ def hatthread():
 		    file_setup2(filename2)
 
 	    if logging == True and DELAY == 0:
-		sense_data2 = get_hat_data()
 		log_data2()
 
 
@@ -278,13 +277,11 @@ def hatthread():
 		with open(filename2,"a") as g:
 		    for line in batch_data2:
 			g.write(line + "\n")
-		    batch_data2 = []
 
 	try:
 	    with open(filename2,"a") as g:
 		for line in batch_data2:
 			g.write(line + "\n")
-			batch_data2 = []
 			print(".")
 	except:
 		print("No log file to close")
