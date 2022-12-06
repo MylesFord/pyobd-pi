@@ -39,7 +39,7 @@ def hello():
 def file_setup1(filename):
     header =[]
 
-    header.append("GPS_Logger\ntime")
+    header.append("GPS_Logger")
 
     if GPS_D:    
         header.extend(["GPSmph","GPStrack","GPSlat","GPSlong","GPSalt","GPSsats"])
