@@ -298,7 +298,9 @@ batch_data= []
 batch_data2= []
 
 a = threading.Thread(target= gpsthread, name='GPS data thread')
+daemon = True
 b = threading.Thread(target= hatthread, name='Sense hat data thread')
+daemon = True
 a.start()
 b.start()	
 	
