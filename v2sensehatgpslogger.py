@@ -26,7 +26,6 @@ ORIENTATION=True
 ACCELERATION=True
 MAG=True
 GYRO=True
-DELAY = 0
 BASENAME = "Fall"
 WRITE_FREQUENCY =100
 ENABLE_CAMERA = False
@@ -124,12 +123,6 @@ def log_data():
     output_string = ",".join(str(value) for value in sense_data)
     batch_data.append(output_string)
 
-def timed_log():
-    while run:
-        if logging == True:
-            log_data()
-        time.sleep(DELAY)
-
 
 ## Main Program
 hello()
@@ -152,8 +145,6 @@ batch_data= []
 #filename = "log/"+"Log-"+str(datetime.now())+".csv"
 #file_setup(filename)
 
-if DELAY > 0:
-    Thread(target= timed_log).start()
                   
 while run==True:
     ledrotate = 0;  
@@ -177,7 +168,7 @@ while run==True:
             filename = "log/"+"Log-"+str(localtime[0])+"-"+str(localtime[1])+"-"+str(localtime[2])+"-"+str(localtime[3])+"-"+str(localtime[4])+"-"+str(localtime[5])+".csv"
             file_setup(filename)
 
-    if logging == True and DELAY == 0:
+    if logging == True
         sense_data = get_sense_data()
         log_data()
 
